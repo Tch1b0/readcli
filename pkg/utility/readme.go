@@ -44,6 +44,7 @@ func (readme Readme) Render() ([]byte, error) {
 const README_TEMPLATE = `# {{ .Title }}
 
 ![shield](https://img.shields.io/github/license/{{ .Username }}/{{ .RepositoryName }})
+
 {{ .Description }}
 
 {{ if .Watermark }}

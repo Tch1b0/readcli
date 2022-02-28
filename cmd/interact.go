@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"fmt"
+	"errors"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/Tch1b0/readcli/pkg/utility"
 	"github.com/go-git/go-git/v5"
@@ -22,19 +23,37 @@ func getRepoUrl() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	url := remotes[0].Config().URLs[0]
+	if len(remotes) == 0 {
+		return "", errors.New("no remotes there")
+	}
+	remoteConfig := remotes[0].Config()
+	if len(remoteConfig.URLs) == 0 {
+		return "", errors.New("no URLs in remote-config")
+	}
+	url := remoteConfig.URLs[0]
+	url = strings.TrimSuffix(url, ".git")
 	return url, nil
 }
 
 func CreateReadme() utility.Readme {
+	title := utility.RequestValueInput("title", nil)
+	description := utility.RequestValueInput("description", nil)
+
 	predictedRepoUrl, err := getRepoUrl()
-	var repoUrl interface{}
+	var repoURL string
 	if err == nil {
-		repoUrl = utility.RequestValueInput("repository URL", predictedRepoUrl)
+		repoURL = utility.RequestValueInput("repository URL", predictedRepoUrl)
 	} else {
-		repoUrl = utility.RequestValueInput("repository URL", nil)
+		repoURL = utility.RequestValueInput("repository URL", nil)
 	}
-	fmt.Println(repoUrl)
-	return utility.Readme{}
+	repoURL = strings.TrimSuffix(repoURL, "/")
+
+	watermark := utility.RequestDecisionInput("show watermark", true)
+
+	return utility.Readme{
+		Title:         title,
+		Description:   description,
+		RepositoryURL: repoURL,
+		Watermark:     watermark,
+	}
 }

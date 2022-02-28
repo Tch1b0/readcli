@@ -2,21 +2,29 @@ package utility
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/mh-cbon/emd/emd"
 )
 
 type Readme struct {
-	Title       string
-	Description string
-	Watermark   bool
+	Title         string
+	Description   string
+	RepositoryURL string
+	Watermark     bool
 }
 
 func (r Readme) ToMap() map[string]interface{} {
+	splittedRepo := strings.Split(r.RepositoryURL, "/")
+	username := splittedRepo[len(splittedRepo)-2]
+	repoName := splittedRepo[len(splittedRepo)-1]
 	return map[string]interface{}{
-		"Title":       r.Title,
-		"Description": r.Description,
-		"Watermark":   r.Watermark,
+		"Title":          r.Title,
+		"Description":    r.Description,
+		"RepositoryURL":  r.RepositoryURL,
+		"Username":       username,
+		"RepositoryName": repoName,
+		"Watermark":      r.Watermark,
 	}
 }
 
@@ -35,6 +43,7 @@ func (readme Readme) Render() ([]byte, error) {
 
 const README_TEMPLATE = `# {{ .Title }}
 
+![shield](https://img.shields.io/github/license/{{ .Username }}/{{ .RepositoryName }})
 {{ .Description }}
 
 {{ if .Watermark }}

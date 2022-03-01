@@ -63,12 +63,15 @@ func CreateReadme() (utility.Readme, error) {
 	}
 	repoURL = strings.TrimSuffix(repoURL, "/")
 
+	requirements := utility.RequestValueListInput("requirements")
+
 	watermark := utility.RequestDecisionInput("show watermark", true)
 
 	return utility.Readme{
 		Title:         title,
 		Description:   description,
 		RepositoryURL: repoURL,
+		Requirements:  requirements,
 		Watermark:     watermark,
 	}, nil
 }

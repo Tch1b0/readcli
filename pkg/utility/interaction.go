@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/fatih/color"
@@ -25,6 +26,14 @@ func RequestValueInput(requestedValue string, defaultValue interface{}) string {
 	} else {
 		return answer
 	}
+}
+
+func RequestValueListInput(requestedValue string) []string {
+	requestedValue = color.YellowString(requestedValue)
+	answer := GetInput(fmt.Sprintf("%s [seperate with comma]: ", requestedValue))
+	s, _ := regexp.Compile(", ?")
+
+	return s.Split(answer, -1)
 }
 
 func RequestDecisionInput(question string, preferTrue bool) bool {

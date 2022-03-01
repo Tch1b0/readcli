@@ -8,10 +8,11 @@ import (
 )
 
 type Readme struct {
-	Title         string `json:"title"`
-	Description   string `json:"description"`
-	RepositoryURL string `json:"repository-url"`
-	Watermark     bool   `json:"watermark"`
+	Title         string   `json:"title"`
+	Description   string   `json:"description"`
+	RepositoryURL string   `json:"repository-url"`
+	Requirements  []string `json:"requirements"`
+	Watermark     bool     `json:"watermark"`
 }
 
 func (r Readme) ToMap() map[string]interface{} {
@@ -38,7 +39,10 @@ func (r Readme) ToMap() map[string]interface{} {
 func (readme Readme) Render() ([]byte, error) {
 	gen := emd.NewGenerator()
 	gen.AddTemplate(README_TEMPLATE)
-	gen.SetDataMap(readme.ToMap())
+	data := readme.ToMap()
+	data["HasRequirements"] = len(readme.Requirements) != 0
+	data["RequirementList"] = CreateMarkdownList(readme.Requirements)
+	gen.SetDataMap(data)
 
 	var rendered bytes.Buffer
 	if err := gen.Execute(&rendered); err != nil {
@@ -54,7 +58,13 @@ const README_TEMPLATE = `# {{ .Title }}
 
 {{ .Description }}
 
-## Maintainers
+{{ if .HasRequirements }}
+## requirements
+
+{{ .RequirementList }}
+{{ end }}
+
+## Contributors
 
 -	{{ .Username }}
 

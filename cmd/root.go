@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
+	"github.com/Tch1b0/readcli/pkg/utility"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +20,26 @@ var rootCmd = &cobra.Command{
 		if Help {
 			return cmd.Help()
 		}
-		return nil
+		var readme utility.Readme
+		var err error
+		if len(loadConfig) != 0 {
+			content, err := os.ReadFile(loadConfig)
+			if err != nil {
+				return err
+			}
+			json.Unmarshal(content, &readme)
+		} else {
+			readme, err = CreateReadme()
+			if err != nil {
+				return err
+			}
+		}
+		content, err := readme.Render()
+		if err != nil {
+			return err
+		}
+
+		return os.WriteFile(outPath, content, 0600)
 	},
 }
 
@@ -31,6 +53,8 @@ var (
 	BuildVersion string = "0.0.0"
 	Version      bool
 	Help         bool
+	loadConfig   string
+	outPath      string
 )
 
 func init() {
@@ -45,5 +69,17 @@ func init() {
 		"help",
 		false,
 		"Open help",
+	)
+	rootCmd.Flags().StringVar(
+		&loadConfig,
+		"load",
+		"",
+		"Load readcli config",
+	)
+	rootCmd.Flags().StringVar(
+		&outPath,
+		"out",
+		"./README.md",
+		"Declare where the file should be generated",
 	)
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/Tch1b0/readcli/pkg/utility"
@@ -31,14 +32,28 @@ func getRepoUrl() (string, error) {
 		return "", errors.New("no URLs in remote-config")
 	}
 	url := remoteConfig.URLs[0]
+	url = strings.TrimSuffix(url, "/")
 	url = strings.TrimSuffix(url, ".git")
 	return url, nil
 }
 
-func CreateReadme() utility.Readme {
-	title := utility.RequestValueInput("title", nil)
-	description := utility.RequestValueInput("description", nil)
+func getCurrentDirectory() (string, error) {
+	currentPath, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	_, tmp := filepath.Split(currentPath)
+	return tmp, nil
+}
 
+func CreateReadme() (utility.Readme, error) {
+	dir, err := getCurrentDirectory()
+	if err != nil {
+		return utility.Readme{}, err
+	}
+
+	title := utility.RequestValueInput("title", dir)
+	description := utility.RequestValueInput("description", nil)
 	predictedRepoUrl, err := getRepoUrl()
 	var repoURL string
 	if err == nil {
@@ -55,5 +70,5 @@ func CreateReadme() utility.Readme {
 		Description:   description,
 		RepositoryURL: repoURL,
 		Watermark:     watermark,
-	}
+	}, nil
 }

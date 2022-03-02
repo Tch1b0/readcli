@@ -10,6 +10,18 @@ import (
 	"github.com/fatih/color"
 )
 
+// print the question and wait for a user-input
+func GetInput(question string) string {
+	fmt.Print(question)
+	var input string
+	reader := bufio.NewScanner(os.Stdin)
+	if reader.Scan() {
+		input = reader.Text()
+	}
+	return input
+}
+
+// ask for the requestedValue and return either the user-input or the default value
 func RequestValueInput(requestedValue string, defaultValue interface{}) string {
 	requestedValue = color.YellowString(requestedValue)
 	var request string
@@ -28,6 +40,7 @@ func RequestValueInput(requestedValue string, defaultValue interface{}) string {
 	}
 }
 
+// ask for the requestedValue and gather the list items from the input
 func RequestValueListInput(requestedValue string) []string {
 	requestedValue = color.YellowString(requestedValue)
 	answer := GetInput(fmt.Sprintf("%s [seperate with comma]: ", requestedValue))
@@ -39,6 +52,7 @@ func RequestValueListInput(requestedValue string) []string {
 	return s.Split(answer, -1)
 }
 
+// print the question and wait for a "y/n" answer from the user
 func RequestDecisionInput(question string, preferTrue bool) bool {
 	question = color.YellowString("%s?", question)
 
@@ -63,14 +77,4 @@ func RequestDecisionInput(question string, preferTrue bool) bool {
 	} else {
 		return preferTrue
 	}
-}
-
-func GetInput(question string) string {
-	fmt.Print(question)
-	var input string
-	reader := bufio.NewScanner(os.Stdin)
-	if reader.Scan() {
-		input = reader.Text()
-	}
-	return input
 }

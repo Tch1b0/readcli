@@ -52,8 +52,6 @@ func CreateReadme() (utility.Readme, error) {
 		return utility.Readme{}, err
 	}
 
-	title := utility.RequestValueInput("title", dir)
-	description := utility.RequestValueInput("description", nil)
 	predictedRepoUrl, err := getRepoUrl()
 	var repoURL string
 	if err == nil {
@@ -63,18 +61,13 @@ func CreateReadme() (utility.Readme, error) {
 	}
 	repoURL = strings.TrimSuffix(repoURL, "/")
 
-	requirements := utility.RequestValueListInput("requirements")
-
-	showContributors := utility.RequestDecisionInput("list contributors", false)
-
-	watermark := utility.RequestDecisionInput("show watermark", true)
-
 	return utility.Readme{
-		Title:            title,
-		Description:      description,
+		Title:            utility.RequestValueInput("title", dir),
+		Description:      utility.RequestValueInput("description", nil),
 		RepositoryURL:    repoURL,
-		Requirements:     requirements,
-		ShowContributors: showContributors,
-		Watermark:        watermark,
+		Requirements:     utility.RequestValueListInput("requirements"),
+		ShowShields:      utility.RequestDecisionInput("show shields", true),
+		ShowContributors: utility.RequestDecisionInput("list contributors", false),
+		Watermark:        utility.RequestDecisionInput("show watermark", true),
 	}, nil
 }

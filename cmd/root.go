@@ -34,6 +34,16 @@ var rootCmd = &cobra.Command{
 				return err
 			}
 		}
+		if len(SaveConfig) != 0 {
+			byteConfig, err := json.MarshalIndent(readme, "", "  ")
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(SaveConfig, byteConfig, 0600)
+			if err != nil {
+				return err
+			}
+		}
 		content, err := readme.Render()
 		if err != nil {
 			return err
@@ -54,6 +64,7 @@ var (
 	Version      bool
 	Help         bool
 	loadConfig   string
+	SaveConfig   string
 	outPath      string
 )
 
@@ -69,6 +80,12 @@ func init() {
 		"help",
 		false,
 		"Open help",
+	)
+	rootCmd.Flags().StringVar(
+		&SaveConfig,
+		"save",
+		"",
+		"Save readcli config",
 	)
 	rootCmd.Flags().StringVar(
 		&loadConfig,

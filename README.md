@@ -4,8 +4,6 @@
 
 A CLI for generating README skeletons
 
-## requirements
-
 ## usage
 
 ```bash
@@ -20,7 +18,7 @@ Flags:
       --version       Print version
 ```
 
-## other
+## requirements
 
 -   golang (for install from source)
 

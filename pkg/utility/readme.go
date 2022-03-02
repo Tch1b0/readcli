@@ -66,10 +66,10 @@ const README_TEMPLATE = `# {{ .Title }}
 {{ end }}
 {{ .Description }}
 
-{{ if .HasRequirements }}## requirements
-
 {{ if .HasHeadings }}{{ .Headings }}
 {{end}}
+{{ if .HasRequirements }}## requirements
+
 {{ .RequirementList }}{{ end }}
 {{ if .ShowContributors }}## Contributors
 

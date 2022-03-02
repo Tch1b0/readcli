@@ -65,6 +65,7 @@ func CreateReadme() (utility.Readme, error) {
 		Title:            utility.RequestValueInput("title", dir),
 		Description:      utility.RequestValueInput("description", nil),
 		RepositoryURL:    repoURL,
+		Headings:         utility.RequestValueListInput("additional headings"),
 		Requirements:     utility.RequestValueListInput("requirements"),
 		ShowShields:      utility.RequestDecisionInput("show shields", true),
 		ShowContributors: utility.RequestDecisionInput("list contributors", false),

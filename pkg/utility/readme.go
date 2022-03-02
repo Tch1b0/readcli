@@ -11,6 +11,7 @@ type Readme struct {
 	Title            string   `json:"title"`
 	Description      string   `json:"description"`
 	RepositoryURL    string   `json:"repository-url"`
+	Headings         []string `json:"headings"`
 	Requirements     []string `json:"requirements"`
 	ShowContributors bool     `json:"show-contributors"`
 	ShowShields      bool     `json:"show-shields"`
@@ -47,6 +48,8 @@ func (readme Readme) Render() ([]byte, error) {
 	data := readme.ToMap()
 	data["HasRequirements"] = len(readme.Requirements) != 0
 	data["RequirementList"] = CreateMarkdownList(readme.Requirements)
+	data["HasHeadings"] = len(readme.Headings) != 0
+	data["Headings"] = CreateMarkdownHeadings(readme.Headings, 2)
 	gen.SetDataMap(data)
 
 	var rendered bytes.Buffer
@@ -65,6 +68,8 @@ const README_TEMPLATE = `# {{ .Title }}
 
 {{ if .HasRequirements }}## requirements
 
+{{ if .HasHeadings }}{{ .Headings }}
+{{end}}
 {{ .RequirementList }}{{ end }}
 {{ if .ShowContributors }}## Contributors
 

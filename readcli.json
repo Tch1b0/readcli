@@ -2,5 +2,7 @@
     "title": "readcli",
     "description": "Generate READMEs with a CLI",
     "repository-url": "https://github.com/Tch1b0/readcli",
+    "requirements": ["golang (for building from source)"],
+    "show-contributors": false,
     "watermark": true
 }

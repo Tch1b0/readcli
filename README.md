@@ -1,14 +1,12 @@
 # readcli
 
-![shield](https://img.shields.io/github/license/Tch1b0/readcli)
+![shield](https://img.shields.io/github/license/Tch1b0/readcli) ![shield](https://img.shields.io/github/issues/Tch1b0/readcli)
 
-A CLI for generating READMEs
+Generate READMEs with a CLI
 
 ## requirements
 
--   docker
--   python
--   ruby
+-   golang (for building from source)
 
 ## Contributors
 

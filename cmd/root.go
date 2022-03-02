@@ -80,6 +80,6 @@ func init() {
 		&outPath,
 		"out",
 		"./README.md",
-		"Declare where the file should be generated",
+		"Path of the output file",
 	)
 }

@@ -31,6 +31,9 @@ func RequestValueInput(requestedValue string, defaultValue interface{}) string {
 func RequestValueListInput(requestedValue string) []string {
 	requestedValue = color.YellowString(requestedValue)
 	answer := GetInput(fmt.Sprintf("%s [seperate with comma]: ", requestedValue))
+	if answer == "" {
+		return []string{}
+	}
 	s, _ := regexp.Compile(", ?")
 
 	return s.Split(answer, -1)

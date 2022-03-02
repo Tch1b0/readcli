@@ -65,13 +65,16 @@ func CreateReadme() (utility.Readme, error) {
 
 	requirements := utility.RequestValueListInput("requirements")
 
+	showContributors := utility.RequestDecisionInput("list contributors", false)
+
 	watermark := utility.RequestDecisionInput("show watermark", true)
 
 	return utility.Readme{
-		Title:         title,
-		Description:   description,
-		RepositoryURL: repoURL,
-		Requirements:  requirements,
-		Watermark:     watermark,
+		Title:            title,
+		Description:      description,
+		RepositoryURL:    repoURL,
+		Requirements:     requirements,
+		ShowContributors: showContributors,
+		Watermark:        watermark,
 	}, nil
 }

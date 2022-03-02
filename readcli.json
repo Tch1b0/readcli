@@ -1,8 +1,9 @@
 {
     "title": "readcli",
-    "description": "Generate READMEs with a CLI",
+    "description": "A CLI for generating README skeletons",
     "repository-url": "https://github.com/Tch1b0/readcli",
-    "requirements": ["golang (for building from source)"],
+    "requirements": ["docker (for building from source)"],
     "show-contributors": false,
+    "show-shields": true,
     "watermark": true
 }
